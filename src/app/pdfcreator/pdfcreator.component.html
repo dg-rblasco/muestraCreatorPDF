@@ -1,0 +1,55 @@
+<div id="content" #content>
+    <div class="alert alert-info">
+        <h1>¡Chimichangas!</h1>
+        <strong>Html To PDF Conversion - Angular 6</strong>
+    </div>
+    <div>
+        <input type="button" value="CPTURE" (click)="captureScreen()"/>
+    </div>
+</div>
+<div>
+    <table id="contentToConvert">
+        <tr>
+            <th>Column1</th>
+            <th>Column2</th>
+            <th>Column3</th>
+            <th>Código de barras</th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 1</td>
+            <td contenteditable="true">Row 1</td>
+            <td contenteditable="true">Row 1</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 2</td>
+            <td contenteditable="true">Row 2</td>
+            <td contenteditable="true">Row 2</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 3</td>
+            <td contenteditable="true">Row 3</td>
+            <td contenteditable="true">Row 3</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 4</td>
+            <td contenteditable="true">Row 4</td>
+            <td contenteditable="true">Row 4</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 5</td>
+            <td contenteditable="true">Row 5</td>
+            <td contenteditable="true">Row 5</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
+        </tr>
+        <tr>
+            <td contenteditable="true">Row 6</td>
+            <td contenteditable="true">Row 6</td>
+            <td contenteditable="true">Row 6</td>
+            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
+        </tr>
+    </table>
+</div>
