@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 
+import { LazyLoadingLibraryServiceService } from '../services/lazy-loading-library-service.service';
+
 @Component({
   selector: 'pdfcreator',
   templateUrl: './pdfcreator.component.html',
@@ -12,10 +14,12 @@ export class PDFcreatorComponent implements OnInit {
     public value: string = 'chinchulin come chimichangas a modo canibal';
     public width: number = 0.3;
     public height: number = 20;
-  constructor() {
-  }
-    public captureScreen()
-    {
+    constructor(private lazyLoad: LazyLoadingLibraryServiceService) {
+        this.lazyLoad.loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js').subscribe(() => {
+            console.log("¡Rayos y retruecanos! ¡Ha funcionado!");
+        });
+    }
+    public captureScreen() {
         var data = document.getElementById('contentToConvert');
         html2canvas(data).then(canvas => {
             // Few necessary setting options
