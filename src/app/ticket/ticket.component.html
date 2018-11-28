@@ -1,0 +1,10 @@
+<table border="1px" (click)="clickTrigger()">
+  <tr *ngFor="let rowNow of rows">
+    <td *ngFor="let columnNow of colums">
+      P: [{{ rowNow }} - {{ columnNow }}]
+    </td>
+    <td class="etiquetaChachiway">
+      <ngx-barcode [bc-value]="this.objTicket.value_codebar" [bc-width]="0.3" [bc-height]="20" [bc-display-value]="false"></ngx-barcode>
+    </td>
+  </tr>
+</table>

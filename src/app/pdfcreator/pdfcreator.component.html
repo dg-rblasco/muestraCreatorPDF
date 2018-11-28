@@ -1,101 +1,27 @@
-<div id="content" #content>
-    <div class="alert alert-info">
-        <h1>¡Chimichangas!</h1>
-        <strong>Html To PDF Conversion - Angular 6</strong>
-    </div>
-    <div>
-        <input type="button" value="CAPTURE" (click)="captureScreen()"/>
-    </div>
+<div class="header">
+    <h1>Html To PDF Conversion - Angular 6</h1>
 </div>
-<input type="text" placeholder="Valor Codebar 1" [name]="'codevar1'" [(ngModel)]="value"><br>
-<input type="text" placeholder="Valor Codebar 2" [name]="'codevar2'" [(ngModel)]="value2"><br>
-<div id="contentToConvert">
-    <table>
-        <tr>
-            <th>Column1</th>
-            <th>Column2</th>
-            <th>Column3</th>
-            <th>Código de barras</th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 1</td>
-            <td contenteditable="true">Row 1</td>
-            <td contenteditable="true">Row 1</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 2</td>
-            <td contenteditable="true">Row 2</td>
-            <td contenteditable="true">Row 2</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 3</td>
-            <td contenteditable="true">Row 3</td>
-            <td contenteditable="true">Row 3</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 4</td>
-            <td contenteditable="true">Row 4</td>
-            <td contenteditable="true">Row 4</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 5</td>
-            <td contenteditable="true">Row 5</td>
-            <td contenteditable="true">Row 5</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 6</td>
-            <td contenteditable="true">Row 6</td>
-            <td contenteditable="true">Row 6</td>
-            <th><ngx-barcode [bc-value]="value" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th>Column1</th>
-            <th>Column2</th>
-            <th>Column3</th>
-            <th>Código de barras</th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 1</td>
-            <td contenteditable="true">Row 1</td>
-            <td contenteditable="true">Row 1</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 2</td>
-            <td contenteditable="true">Row 2</td>
-            <td contenteditable="true">Row 2</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 3</td>
-            <td contenteditable="true">Row 3</td>
-            <td contenteditable="true">Row 3</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 4</td>
-            <td contenteditable="true">Row 4</td>
-            <td contenteditable="true">Row 4</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="true"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 5</td>
-            <td contenteditable="true">Row 5</td>
-            <td contenteditable="true">Row 5</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-        <tr>
-            <td contenteditable="true">Row 6</td>
-            <td contenteditable="true">Row 6</td>
-            <td contenteditable="true">Row 6</td>
-            <th><ngx-barcode [bc-value]="value2" [bc-width]="width" [bc-height]="height" [bc-display-value]="false"></ngx-barcode></th>
-        </tr>
-    </table>
+<div id="barTools" #content>
+    <p>Document</p>
+    <select [name]="'sizePrint'" [(ngModel)]="sizePrint">
+        <option *ngFor="let size of sizes" [value]="size.size">{{ size.name }}</option>
+    </select>
+    <select [name]="'orientation'" [(ngModel)]="orientation_s">
+        <option *ngFor="let orientation of orientations" [value]="orientation.orientation">{{ orientation.name }}</option>
+    </select>
+    <p>Codebars</p>
+    <ng-container  *ngFor="let ticketNow of tickets_almacenados; let i = index">
+        <input type="text" placeholder="Valor Codebar {{i}}" [name]="'codevar'+i" [(ngModel)]="ticketNow.value_codebar"><br>
+    </ng-container>
+    <input type="button" value="CAPTURE" (click)="captureScreen()"/>
+</div>
+<div class="previewPDF">
+    <div id="contentToConvert" [class]="sizePrint+' '+orientation_s">
+        <div class="containerPage">
+            <ng-container *ngFor="let ticketNow of tickets_almacenados">
+                <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
+            </ng-container>
+        </div>
+
+    </div>
 </div>

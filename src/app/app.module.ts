@@ -6,11 +6,13 @@ import { PDFcreatorComponent } from './pdfcreator/pdfcreator.component';
 // Import ngx-barcode module
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { FormsModule } from '@angular/forms';
+import { TicketComponent } from './ticket/ticket.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PDFcreatorComponent
+    PDFcreatorComponent,
+    TicketComponent
   ],
   imports: [
     BrowserModule,

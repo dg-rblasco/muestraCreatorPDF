@@ -11,37 +11,78 @@ import { LazyLoadingLibraryServiceService } from '../services/lazy-loading-libra
   styleUrls: ['./pdfcreator.component.css']
 })
 export class PDFcreatorComponent implements OnInit {
-    public value: string = 'chinchulin come chimichangas a modo canibal';
-    public value2: string = 'Who are you gonna call?! Ghostbuster!!';
+    //tickets dinamicos vacios
+    public numberOfTickets:number = 5;
+    public tickets_almacenados = []; //este guardará las instanciaciones (objs) de la clase ticket
+    //son del ejemplo basico
+    public value: string = 'Codebar 1';
+    public value2: string = 'Codebar 2';
     public width: number = 0.3;
     public height: number = 20;
+    public sizePrint: string = 'a4'
+    public sizes:any[] = [
+        {size:'a2',name:'A2',dimensions:{width:420,height:594}},
+        {size:'a3',name:'A3',dimensions:{width:297,height:420}},
+        {size:'a4',name:'A4',dimensions:{width:210,height:297}},
+        {size:'a5',name:'A5',dimensions:{width:148,height:210}},
+        {size:'a6',name:'A6',dimensions:{width:105,height:148}}
+    ];
+    public orientation_s = 'p';
+    public orientations:any[] = [{orientation:'p',name:'Portrait'},{orientation:'l',name:'Landskape'}];
     constructor(private lazyLoad: LazyLoadingLibraryServiceService) {
         //me falta la ruta local del proyecto para html2canvas y jspdf
         /*this.lazyLoad.loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js').subscribe(() => {
             console.log("¡Rayos y retruecanos! ¡Ha funcionado!");
         });*/
+        //aquí declaro los objs en tickets_almacenados
+        for (let NewTicketIDLocal = 0; NewTicketIDLocal < this.numberOfTickets; NewTicketIDLocal ++){
+            let idLocal = NewTicketIDLocal+1;
+            this.tickets_almacenados.push( new Ticket(3,3,'Ticket_'+idLocal));
+        }
     }
     public captureScreen() {
         var data = document.getElementById('contentToConvert');
         html2canvas(data).then(canvas => {
             // Few necessary setting options
-            let imgWidth = 100;
+            let imgWidth:number;
+            this.sizes.map((sizeNow)=>{
+               if(sizeNow.size === this.sizePrint)
+                   imgWidth = sizeNow.dimensions.width;
+            });
+            //let imgWidth = 210;
             let imgHeight = canvas.height * imgWidth / canvas.width;
 
             const contentDataURL = canvas.toDataURL('image/png')
             let pdf = new jspdf(
-                'p',  //p --> portrait, l --> landskape
+                this.orientation_s,  //p --> portrait, l --> landskape
                 'mm', // mm, cm, in
-                'a2' // A4, A3 size page of PDF
+                this.sizePrint // A4, A3 size page of PDF
             );
             let positionY = 0;
             let positionX = 0;
             pdf.addImage(contentDataURL, 'PNG', positionX, positionY, imgWidth, imgHeight);
-            //pdf.addImage(contentDataURL, 'PNG', positionX, positionY+imgHeight, imgWidth, imgHeight);
+            //para añadir una nueva pagina
+            /*pdf.addPage();
+            pdf.addImage(contentDataURL, 'PNG', positionX, positionY, imgWidth, imgHeight,"", "FAST");*/
             pdf.save('nombreChinchulinPowerRangers.pdf'); // Generated PDF
         });
     }
 
   ngOnInit() {}
 
+
+  loadForm(data){
+        alert('¡Chimichangas!');
+  }
+}
+
+class Ticket{
+    public number_columns:number;
+    public number_rows:number;
+    public value_codebar:string;
+    constructor(number_columns:number,number_rows:number,value_codebar:string){
+        this.number_columns = number_columns;
+        this.number_rows = number_rows;
+        this.value_codebar = value_codebar;
+    }
 }
