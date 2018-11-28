@@ -9,14 +9,17 @@
     <select [name]="'orientation'" [(ngModel)]="orientation_s">
         <option *ngFor="let orientation of orientations" [value]="orientation.orientation">{{ orientation.name }}</option>
     </select>
-    <p>Codebars</p>
+    <p>Tickets</p>
     <ng-container  *ngFor="let ticketNow of tickets_almacenados; let i = index">
         <input type="text" placeholder="Valor Codebar {{i}}" [name]="'codevar'+i" [(ngModel)]="ticketNow.value_codebar"><br>
+        <input type="text" placeholder="Width {{i}}" [name]="'width'+i" [(ngModel)]="ticketNow.width"><br>
+        <input type="text" placeholder="Height {{i}}" [name]="'height'+i" [(ngModel)]="ticketNow.height"><br>
+        <hr>
     </ng-container>
     <input type="button" value="CAPTURE" (click)="captureScreen()"/>
 </div>
 <div class="previewPDF">
-    <div id="contentToConvert" [class]="sizePrint+' '+orientation_s">
+    <div id="contentToConvert" [ngStyle]="getSizePage()">
         <div class="containerPage">
             <ng-container *ngFor="let ticketNow of tickets_almacenados">
                 <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
