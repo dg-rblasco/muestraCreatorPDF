@@ -12,30 +12,32 @@ import { LazyLoadingLibraryServiceService } from '../services/lazy-loading-libra
 })
 export class PDFcreatorComponent implements OnInit {
     public value: string = 'chinchulin come chimichangas a modo canibal';
+    public value2: string = 'Who are you gonna call?! Ghostbuster!!';
     public width: number = 0.3;
     public height: number = 20;
     constructor(private lazyLoad: LazyLoadingLibraryServiceService) {
-        this.lazyLoad.loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js').subscribe(() => {
+        //me falta la ruta local del proyecto para html2canvas y jspdf
+        /*this.lazyLoad.loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js').subscribe(() => {
             console.log("¡Rayos y retruecanos! ¡Ha funcionado!");
-        });
+        });*/
     }
     public captureScreen() {
         var data = document.getElementById('contentToConvert');
         html2canvas(data).then(canvas => {
             // Few necessary setting options
-            let imgWidth = 50;
+            let imgWidth = 100;
             let imgHeight = canvas.height * imgWidth / canvas.width;
 
             const contentDataURL = canvas.toDataURL('image/png')
             let pdf = new jspdf(
                 'p',  //p --> portrait, l --> landskape
                 'mm', // mm, cm, in
-                'a6' // A4, A3 size page of PDF
+                'a2' // A4, A3 size page of PDF
             );
             let positionY = 0;
             let positionX = 0;
             pdf.addImage(contentDataURL, 'PNG', positionX, positionY, imgWidth, imgHeight);
-            pdf.addImage(contentDataURL, 'PNG', positionX, positionY+imgHeight, imgWidth, imgHeight);
+            //pdf.addImage(contentDataURL, 'PNG', positionX, positionY+imgHeight, imgWidth, imgHeight);
             pdf.save('nombreChinchulinPowerRangers.pdf'); // Generated PDF
         });
     }

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { PDFcreatorComponent } from './pdfcreator/pdfcreator.component';
 // Import ngx-barcode module
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
   ],
   imports: [
     BrowserModule,
-      NgxBarcodeModule
+      NgxBarcodeModule,
+      FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
