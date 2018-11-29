@@ -19,14 +19,7 @@
     <input type="button" value="CAPTURE" (click)="captureScreen()"/>
 </div>
 <div class="previewPDF">
-    <!--<div id="contentToConvert" [ngStyle]="getSizePage()">
-        <div class="containerPage">
-            <ng-container *ngFor="let ticketNow of tickets_almacenados">
-                <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
-            </ng-container>
-        </div>
-    </div>-->
-    <div class="contentToConvert" [ngStyle]="getSizePage()" *ngFor="let page of pages">
+    <div class="page_preview" [ngStyle]="getSizePage()" *ngFor="let page of pages">
         <div class="containerPage">
             <ng-container *ngFor="let ticketNow of page">
                 <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
