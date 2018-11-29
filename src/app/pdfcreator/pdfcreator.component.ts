@@ -50,60 +50,32 @@ export class PDFcreatorComponent implements OnInit {
             this.sizePrint // A4, A3 size page of PDF
         );
         //escribimos el pdf
-        //new Promise(function () {
-            Array.prototype.forEach.call(dataPages, function (dataPage) {
-                html2canvas(dataPage).then(page => {
-                    //asignamos el ancho de la imagen
-                    let imgWidth: number;
-                    _this.sizes.map((sizeNow) => {
-                        if (sizeNow.size === _this.sizePrint)
-                            imgWidth = sizeNow.dimensions.width;
-                    });
-                    let imgHeight = page.height * imgWidth / page.width; //ahora viene el ancho
-                    //construimos la imagen
-                    const URLpagePNG = page.toDataURL('image/png');
-                    console.log('Esta es la url de la imagen ', URLpagePNG);
-                    //gestionamos si hace falta otra pagina
-                    if (contador !== 0) {
-                        pdf.addPage();
-                    }
-                    contador++;
-                    //le damos los datos
-                    let positionY = 0;
-                    let positionX = 0;
-                    pdf.addImage(URLpagePNG, 'PNG', positionX, positionY, imgWidth, imgHeight, "", "FAST");
+        Array.prototype.forEach.call(dataPages, function (dataPage, index) {
+            html2canvas(dataPage).then(page => {
+                //asignamos el ancho de la imagen
+                let imgWidth: number;
+                _this.sizes.map((sizeNow) => {
+                    if (sizeNow.size === _this.sizePrint)
+                        imgWidth = sizeNow.dimensions.width;
                 });
-            })
-        //}).then(function () {
-            setTimeout(function(){ pdf.save('nombreChinchulinPowerRangers.pdf'); }, 3000);
-             // Generated PDF
-        //});
-        /*//--------------------------------------------------------
-        var data = document.getElementById('contentToConvert');
-        html2canvas(data).then(canvas => {
-            // Few necessary setting options
-            let imgWidth:number;
-            this.sizes.map((sizeNow)=>{
-               if(sizeNow.size === this.sizePrint)
-                   imgWidth = sizeNow.dimensions.width;
+                let imgHeight = page.height * imgWidth / page.width; //ahora viene el ancho
+                //construimos la imagen
+                const URLpagePNG = page.toDataURL('image/png');
+                console.log('Esta es la url de la imagen ', URLpagePNG);
+                //gestionamos si hace falta otra pagina
+                if (contador !== 0) {
+                    pdf.addPage();
+                }
+                contador++;
+                //le damos los datos
+                let positionY = 0;
+                let positionX = 0;
+                pdf.addImage(URLpagePNG, 'PNG', positionX, positionY, imgWidth, imgHeight, "", "FAST");
+                if(typeof dataPages[index+1] === 'undefined'){
+                    pdf.save('nombreChinchulinPowerRangers.pdf'); // Generated PDF
+                }
             });
-            //let imgWidth = 210;
-            let imgHeight = canvas.height * imgWidth / canvas.width;
-
-            const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jspdf(
-                this.orientation_s,  //p --> portrait, l --> landskape
-                'mm', // mm, cm, in
-                this.sizePrint // A4, A3 size page of PDF
-            );
-            let positionY = 0;
-            let positionX = 0;
-            pdf.addImage(contentDataURL, 'PNG', positionX, positionY, imgWidth, imgHeight);
-            //para añadir una nueva pagina
-            pdf.addPage();
-            pdf.addImage(contentDataURL, 'PNG', positionX, positionY, imgWidth, imgHeight,"", "FAST");
-            pdf.save('nombreChinchulinPowerRangers.pdf'); // Generated PDF
-        });//*/
+        });
     }
 
     /**
