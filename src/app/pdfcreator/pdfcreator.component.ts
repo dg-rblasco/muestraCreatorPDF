@@ -12,8 +12,10 @@ import { LazyLoadingLibraryServiceService } from '../services/lazy-loading-libra
 })
 export class PDFcreatorComponent implements OnInit {
     //tickets dinamicos vacios
-    public numberOfTickets:number = 4;
+    public numberOfTickets:number = 6;
     public tickets_almacenados = []; //este guardará las instanciaciones (objs) de la clase ticket
+    //paginas del documento
+    public pages: any[];
     //son del ejemplo basico
     public value: string = 'Codebar 1';
     public value2: string = 'Codebar 2';
@@ -34,20 +36,6 @@ export class PDFcreatorComponent implements OnInit {
         /*this.lazyLoad.loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js').subscribe(() => {
             console.log("¡Rayos y retruecanos! ¡Ha funcionado!");
         });*/
-        //aquí declaro los objs en tickets_almacenados
-        for (let NewTicketIDLocal = 0; NewTicketIDLocal < this.numberOfTickets; NewTicketIDLocal ++){
-            let idLocal = NewTicketIDLocal+1;
-            let randomType = Math.floor(Math.random() * (4 - 1)) + 1;
-            this.tickets_almacenados.push(
-                new Ticket(
-                    3,
-                    3,
-                    'Ticket_'+idLocal,
-                    'tipo'+randomType,
-                    {width:90,height:40}
-                )
-            );
-        }
     }
     public captureScreen() {
         var data = document.getElementById('contentToConvert');
@@ -85,18 +73,77 @@ export class PDFcreatorComponent implements OnInit {
         let dimensions = this.getSizePage(true);
         //paginas almacenadas en este array
         let pagesPDF = [];
+        //control de pagina y linea
+        let pageNow =[];
+        let lineNow = [];
+        var lineWidth = 0;
+        let lineHeight = 0;
+        let pageOcupedHeight = 0;
         //conseguimos las dimensiones de cada una de las etiquetas
         // OJO --> cualquier etiqueta se ha de calcular con un height +0.6 y un with +0.6 por los margenes
-        this.tickets_almacenados.map( (ticketNow) => {
-            // hay que ir sumando los anchos en cada linea hasta comprobar que se ha pasado
-            // en cada linea se comproborá la etiqueta más larga --> sobreescribiendo una variable que tendrá el height más larog
-            // en cada salto de linea iremos sumando los altos --> si alguno se pasa abrimos nueva pagina
+        this.tickets_almacenados.map( (ticketNow, i) => {
+            //conseguir el ancho y el alto del ticket
+            let widthTicket = ticketNow.width;
+            let heightTicket = ticketNow.height;
+            //si la imagen es más ancha que la propia hoja se quedará sola ocupando esa linea
+            if(lineWidth + widthTicket < dimensions.width){
+                // hay que ir sumando los anchos en cada linea hasta comprobar que se ha pasado
+                lineNow.push(ticketNow);
+                lineWidth += widthTicket + 0.6;
+                // en cada linea se comproborá la etiqueta más larga --> sobreescribiendo una variable que tendrá el height más largo
+                if(heightTicket > lineHeight){
+                    lineHeight = heightTicket + 0.6;
+                }
+            }else {
+                //hay que hacer un salto de linea
+                pageOcupedHeight += lineHeight; // en cada salto de linea iremos sumando los altos
+                this.setTicketsToLineAtThePage(pageNow,lineNow);
+                //reseteamos las variables de la linea
+                lineNow = [ticketNow];
+                lineHeight = heightTicket + 0.6;
+                lineWidth = widthTicket + 0.6;
+            }
             // si un alto es más alto que la propia pagina --> se queda sola en la pagina y será cortada por donde sobresalga
-            
+            if(pageOcupedHeight + heightTicket > dimensions.height){ // --> si alguno se pasa abrimos nueva pagina
+                //hay que hacer un salto de pagina
+                pagesPDF.push(pageNow);
+                pageNow = [];
+                pageOcupedHeight = 0;
+            }
+            //hay que comprobar que no se quede fuera la última pagina
+            if(typeof this.tickets_almacenados[i + 1] === 'undefined'){
+                //si es la ultima pasada de los tickets pusheamos en pagesPDF
+                this.setTicketsToLineAtThePage(pageNow,lineNow);
+                pagesPDF.push(pageNow);
+            }
+        });
+        this.pages = pagesPDF;
+    }
+
+    private setTicketsToLineAtThePage(pageNow,lineNow){
+        lineNow.map( (ticketNow) => {
+            pageNow.push(ticketNow);
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        //aquí declaro los objs en tickets_almacenados
+        for (let NewTicketIDLocal = 0; NewTicketIDLocal < this.numberOfTickets; NewTicketIDLocal ++){
+            let idLocal = NewTicketIDLocal+1;
+            let randomType = Math.floor(Math.random() * (4 - 1)) + 1;
+            this.tickets_almacenados.push(
+                new Ticket(
+                    3,
+                    3,
+                    'Ticket_'+idLocal,
+                    'tipo'+randomType,
+                    {width:90,height:40}
+                )
+            );
+        }
+        //ahora declaro las paginas en base a los tickets generados
+        this.buildArrayPages();
+    }
 
     getSizePage(get_only_number:boolean = false){
         let setW = 0;

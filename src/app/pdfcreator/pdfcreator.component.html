@@ -3,10 +3,10 @@
 </div>
 <div id="barTools" #content>
     <p>Document</p>
-    <select [name]="'sizePrint'" [(ngModel)]="sizePrint">
+    <select [name]="'sizePrint'" [(ngModel)]="sizePrint" (change)="buildArrayPages()">
         <option *ngFor="let size of sizes" [value]="size.size">{{ size.name }}</option>
     </select>
-    <select [name]="'orientation'" [(ngModel)]="orientation_s">
+    <select [name]="'orientation'" [(ngModel)]="orientation_s" (change)="buildArrayPages()">
         <option *ngFor="let orientation of orientations" [value]="orientation.orientation">{{ orientation.name }}</option>
     </select>
     <p>Tickets</p>
@@ -19,12 +19,18 @@
     <input type="button" value="CAPTURE" (click)="captureScreen()"/>
 </div>
 <div class="previewPDF">
-    <div id="contentToConvert" [ngStyle]="getSizePage()">
+    <!--<div id="contentToConvert" [ngStyle]="getSizePage()">
         <div class="containerPage">
             <ng-container *ngFor="let ticketNow of tickets_almacenados">
                 <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
             </ng-container>
         </div>
-
+    </div>-->
+    <div class="contentToConvert" [ngStyle]="getSizePage()" *ngFor="let page of pages">
+        <div class="containerPage">
+            <ng-container *ngFor="let ticketNow of page">
+                <app-ticket [objTicket]="ticketNow" (loadForm)="loadForm($event)"></app-ticket>
+            </ng-container>
+        </div>
     </div>
 </div>

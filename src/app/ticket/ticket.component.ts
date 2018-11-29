@@ -17,8 +17,8 @@ export class TicketComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-      this.colums = Array(this.objTicket.number_columns).fill().map((x,i)=>i); // [0,1,2,3,4]
-      this.rows = Array(this.objTicket.number_rows).fill().map((x,i)=>i); // [0,1,2,3,4]
+      this.colums = Array(this.objTicket.number_columns).fill(this.objTicket.number_columns).map((x,i)=>i); // [0,1,2,3,4]
+      this.rows = Array(this.objTicket.number_rows).fill(this.objTicket.number_rows).map((x,i)=>i); // [0,1,2,3,4]
       //construye el formulario
       this.constructorForm();
   }
